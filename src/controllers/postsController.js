@@ -1,7 +1,20 @@
+const posts = [
+    {
+        id: 1,
+        titulo: "Primeiro post",
+        conteudo: "Este é o primeiro post do blog.",
+        autor: "Professor"
+    },
+    {
+        id: 2,
+        titulo: "Segundo post",
+        conteudo: "Este é o segundo post do blog.",
+        autor: "Professor"
+    }
+];
+
 function listarPosts(req, res) {
-    res.json({
-        mensagem: "Lista de posts funcionando!"
-    });
+    res.json(posts);
 }
 
 module.exports = {
