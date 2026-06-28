@@ -1,11 +1,9 @@
 const express = require("express");
 
+const postsController = require("../controllers/postsController");
+
 const router = express.Router();
 
-router.get("/posts", (req, res) => {
-    res.json({
-        mensagem: "Rota de Posts funcionando!"
-    });
-});
+router.get("/posts", postsController.listarPosts);
 
 module.exports = router;
