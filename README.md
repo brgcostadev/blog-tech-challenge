@@ -1,4 +1,4 @@
-````md
+```md
 # 🚀 Blog Tech Challenge API
 
 API REST desenvolvida em **Node.js** com **Express** e **PostgreSQL**, criada para o **Tech Challenge** da Pós-Tech Full Stack.
