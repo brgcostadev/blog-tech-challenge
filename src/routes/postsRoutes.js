@@ -7,5 +7,7 @@ const router = express.Router();
 router.get("/posts", postsController.listarPosts);
 router.get("/posts/:id", postsController.buscarPostPorId);
 router.post("/posts", postsController.criarPost);
+router.put("/posts/:id", postsController.editarPost);
+router.delete("/posts/:id", postsController.excluirPost);
 
 module.exports = router;
