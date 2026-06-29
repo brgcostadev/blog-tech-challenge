@@ -1,16 +1,16 @@
-const pool = require("../database/connection");
+const postRepository = require("../infrastructure/repositories/PostRepository");
 
 async function listarPosts(req, res) {
     try {
+        const posts = await postRepository.findAll();
 
-        const resultado = await pool.query(
-            "SELECT * FROM posts ORDER BY id"
-        );
-
-        res.json(resultado.rows);
+        return res.json(posts);
     } catch (error) {
         console.error("Erro ao listar posts:", error);
-        res.status(500).json({ mensagem: "Erro ao listar posts" });
+
+        return res.status(500).json({
+            mensagem: "Erro ao listar posts"
+        });
     }
 }
 
@@ -18,18 +18,15 @@ async function buscarPostPorId(req, res) {
     try {
         const id = Number(req.params.id);
 
-        const resultado = await pool.query(
-            "SELECT * FROM posts WHERE id = $1 ORDER BY id",
-            [id]
-        );
+        const post = await postRepository.findById(id);
 
-        if (resultado.rows.length === 0) {
+        if (!post) {
             return res.status(404).json({
                 mensagem: "Post não encontrado"
             });
         }
 
-        res.json(resultado.rows[0]);
+        res.json(post);
     } catch (error) {
         console.error("Erro ao buscar post por ID:", error);
         res.status(500).json({ mensagem: "Erro ao buscar post por ID" });
@@ -40,12 +37,9 @@ async function criarPost(req, res) {
     try {
         const { titulo, conteudo, autor } = req.body;
 
-        const resultado = await pool.query(
-            "INSERT INTO posts (titulo, conteudo, autor) VALUES ($1, $2, $3) RETURNING *",
-            [titulo, conteudo, autor]
-        );
+        const post = await postRepository.create({ titulo, conteudo, autor });
 
-        res.status(201).json(resultado.rows[0]);
+        res.status(201).json(post);
     } catch (error) {
         console.error("Erro ao criar post:", error);
         res.status(500).json({ mensagem: "Erro ao criar post" });
@@ -58,23 +52,15 @@ async function editarPost(req, res) {
         const id = Number(req.params.id);
         const { titulo, conteudo, autor } = req.body;
 
-        const resultado = await pool.query(
-            `UPDATE posts
-         SET titulo = $1,
-             conteudo = $2,
-             autor = $3
-         WHERE id = $4
-         RETURNING *`,
-            [titulo, conteudo, autor, id]
-        );
+        const post = await postRepository.update(id, { titulo, conteudo, autor });
 
-        if (resultado.rows.length === 0) {
+        if (!post) {
             return res.status(404).json({
                 mensagem: "Post não encontrado"
             });
         }
 
-        res.json(resultado.rows[0]);
+        res.json(post);
     } catch (error) {
         console.error("Erro ao editar post:", error);
         res.status(500).json({ mensagem: "Erro ao editar post" });
@@ -82,18 +68,12 @@ async function editarPost(req, res) {
 }
 
 async function excluirPost(req, res) {
-
     try {
         const id = Number(req.params.id);
 
-        const resultado = await pool.query(
-            `DELETE FROM posts
-         WHERE id = $1
-         RETURNING *`,
-            [id]
-        );
+        const post = await postRepository.delete(id);
 
-        if (resultado.rows.length === 0) {
+        if (!post) {
             return res.status(404).json({
                 mensagem: "Post não encontrado"
             });
@@ -107,6 +87,7 @@ async function excluirPost(req, res) {
         res.status(500).json({ mensagem: "Erro ao excluir post" });
     }
 }
+
 
 module.exports = {
     listarPosts,
