@@ -4,7 +4,7 @@ async function listarPosts(req, res) {
     try {
 
         const resultado = await pool.query(
-            "SELECT * FROM posts"
+            "SELECT * FROM posts ORDER BY id"
         );
 
         res.json(resultado.rows);
@@ -19,7 +19,7 @@ async function buscarPostPorId(req, res) {
         const id = Number(req.params.id);
 
         const resultado = await pool.query(
-            "SELECT * FROM posts WHERE id = $1",
+            "SELECT * FROM posts WHERE id = $1 ORDER BY id",
             [id]
         );
 
