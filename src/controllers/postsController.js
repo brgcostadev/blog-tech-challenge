@@ -1,8 +1,13 @@
 const postRepository = require("../infrastructure/repositories/PostRepository");
+const listarPostsUseCase = require("../application/use-cases/posts/ListarPostsUseCase");
+const buscarPostPorIdUseCase = require("../application/use-cases/posts/BuscarPostPorIdUseCase");
+const criarPostUseCase = require("../application/use-cases/posts/CriarPostUseCase");
+const editarPostUseCase = require("../application/use-cases/posts/EditarPostUseCase");
+const excluirPostUseCase = require("../application/use-cases/posts/ExcluirPostUseCase");
 
 async function listarPosts(req, res) {
     try {
-        const posts = await postRepository.findAll();
+        const posts = await listarPostsUseCase.execute();
 
         return res.json(posts);
     } catch (error) {
@@ -17,8 +22,7 @@ async function listarPosts(req, res) {
 async function buscarPostPorId(req, res) {
     try {
         const id = Number(req.params.id);
-
-        const post = await postRepository.findById(id);
+        const post = await buscarPostPorIdUseCase.execute(id);
 
         if (!post) {
             return res.status(404).json({
@@ -35,9 +39,7 @@ async function buscarPostPorId(req, res) {
 
 async function criarPost(req, res) {
     try {
-        const { titulo, conteudo, autor } = req.body;
-
-        const post = await postRepository.create({ titulo, conteudo, autor });
+        const post = await criarPostUseCase.execute(req.body);
 
         res.status(201).json(post);
     } catch (error) {
@@ -50,9 +52,7 @@ async function editarPost(req, res) {
 
     try {
         const id = Number(req.params.id);
-        const { titulo, conteudo, autor } = req.body;
-
-        const post = await postRepository.update(id, { titulo, conteudo, autor });
+        const post = await editarPostUseCase.execute(id, req.body);
 
         if (!post) {
             return res.status(404).json({
@@ -70,8 +70,7 @@ async function editarPost(req, res) {
 async function excluirPost(req, res) {
     try {
         const id = Number(req.params.id);
-
-        const post = await postRepository.delete(id);
+        const post = await excluirPostUseCase.execute(id);
 
         if (!post) {
             return res.status(404).json({
