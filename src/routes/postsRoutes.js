@@ -1,13 +1,12 @@
 const express = require("express");
-
 const postsController = require("../controllers/postsController");
-
+const validarPost = require("../middlewares/validarPost");
 const router = express.Router();
 
 router.get("/posts", postsController.listarPosts);
 router.get("/posts/:id", postsController.buscarPostPorId);
-router.post("/posts", postsController.criarPost);
-router.put("/posts/:id", postsController.editarPost);
+router.post("/posts", validarPost, postsController.criarPost);
+router.put("/posts/:id", validarPost, postsController.editarPost);
 router.delete("/posts/:id", postsController.excluirPost);
 router.get("/test-db", async (req, res) => {
     const pool = require("../database/connection");

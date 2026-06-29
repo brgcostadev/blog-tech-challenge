@@ -40,12 +40,6 @@ async function criarPost(req, res) {
     try {
         const { titulo, conteudo, autor } = req.body;
 
-        if (!titulo || !conteudo || !autor) {
-            return res.status(400).json({
-                mensagem: "Título, conteúdo e autor são obrigatórios."
-            });
-        }
-
         const resultado = await pool.query(
             "INSERT INTO posts (titulo, conteudo, autor) VALUES ($1, $2, $3) RETURNING *",
             [titulo, conteudo, autor]
@@ -63,12 +57,6 @@ async function editarPost(req, res) {
     try {
         const id = Number(req.params.id);
         const { titulo, conteudo, autor } = req.body;
-
-        if (!titulo || !conteudo || !autor) {
-            return res.status(400).json({
-                mensagem: "Título, conteúdo e autor são obrigatórios."
-            });
-        }
 
         const resultado = await pool.query(
             `UPDATE posts
