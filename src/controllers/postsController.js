@@ -1,68 +1,85 @@
 const posts = require("../database/postsDatabase");
+const pool = require("../database/connection");
 
-function listarPosts(req, res) {
-    res.json(posts);
+async function listarPosts(req, res) {
+
+    const resultado = await pool.query(
+        "SELECT * FROM posts"
+    );
+
+    res.json(resultado.rows);
 }
 
-function buscarPostPorId(req, res) {
+async function buscarPostPorId(req, res) {
     const id = Number(req.params.id);
 
-    const post = posts.find((post) => post.id === id);
+    const resultado = await pool.query(
+        "SELECT * FROM posts WHERE id = $1",
+        [id]
+    );
 
-    if (!post) {
+    if (resultado.rows.length === 0) {
         return res.status(404).json({
             mensagem: "Post não encontrado"
         });
     }
 
-    res.json(post);
+    res.json(resultado.rows[0]);
 }
 
-function criarPost(req, res) {
+async function criarPost(req, res) {
+    const { titulo, conteudo, autor } = req.body;
 
-    const novoPost = {
-        id: posts.length + 1,
-        titulo: req.body.titulo,
-        conteudo: req.body.conteudo,
-        autor: req.body.autor
-    };
+    const resultado = await pool.query(
+        "INSERT INTO posts (titulo, conteudo, autor) VALUES ($1, $2, $3) RETURNING *",
+        [titulo, conteudo, autor]
+    );
 
-    posts.push(novoPost);
-
-    res.status(201).json(novoPost);
+    res.status(201).json(resultado.rows[0]);
 }
 
-function editarPost(req, res) {
+async function editarPost(req, res) {
+
     const id = Number(req.params.id);
 
-    const post = posts.find((post) => post.id === id);
+    const { titulo, conteudo, autor } = req.body;
 
-    if (!post) {
+    const resultado = await pool.query(
+        `UPDATE posts
+         SET titulo = $1,
+             conteudo = $2,
+             autor = $3
+         WHERE id = $4
+         RETURNING *`,
+        [titulo, conteudo, autor, id]
+    );
+
+    if (resultado.rows.length === 0) {
         return res.status(404).json({
             mensagem: "Post não encontrado"
         });
     }
 
-    post.titulo = req.body.titulo;
-    post.conteudo = req.body.conteudo;
-    post.autor = req.body.autor;
+    res.json(resultado.rows[0]);
 
-    res.json(post);
 }
 
-function excluirPost(req, res) {
+async function excluirPost(req, res) {
 
     const id = Number(req.params.id);
 
-    const indice = posts.findIndex((post) => post.id === id);
+    const resultado = await pool.query(
+        `DELETE FROM posts
+         WHERE id = $1
+         RETURNING *`,
+        [id]
+    );
 
-    if (indice === -1) {
+    if (resultado.rows.length === 0) {
         return res.status(404).json({
             mensagem: "Post não encontrado"
         });
     }
-
-    posts.splice(indice, 1);
 
     res.json({
         mensagem: "Post removido com sucesso"
