@@ -1,4 +1,3 @@
-const posts = require("../database/postsDatabase");
 const pool = require("../database/connection");
 
 async function listarPosts(req, res) {
