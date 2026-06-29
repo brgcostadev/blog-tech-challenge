@@ -1,9 +1,8 @@
-```md
 # 🚀 Blog Tech Challenge API
 
-API REST desenvolvida em **Node.js** com **Express** e **PostgreSQL**, criada para o **Tech Challenge** da Pós-Tech Full Stack.
+API REST desenvolvida em **Node.js** com **Express.js** e **PostgreSQL**, criada para o **Tech Challenge** da Pós-Tech Full Stack.
 
-O projeto segue uma arquitetura baseada em **MVC**, utiliza **Docker** para o banco de dados, **Swagger** para documentação da API e **Middlewares** para validação das requisições.
+O projeto segue uma arquitetura baseada em **MVC**, utiliza **Docker** para gerenciamento do banco de dados, **Swagger (OpenAPI)** para documentação da API e **Middlewares** para validação das requisições.
 
 ---
 
@@ -23,35 +22,43 @@ O projeto segue uma arquitetura baseada em **MVC**, utiliza **Docker** para o ba
 
 O projeto foi organizado seguindo o padrão MVC.
 
-```text
-src
+```plaintext
+blog-tech-challenge
 │
-├── controllers
-│   └── postsController.js
+├── src
+│   ├── controllers
+│   │   └── postsController.js
+│   │
+│   ├── database
+│   │   └── connection.js
+│   │
+│   ├── docs
+│   │   └── swagger.js
+│   │
+│   ├── middlewares
+│   │   └── validarPost.js
+│   │
+│   ├── routes
+│   │   └── postsRoutes.js
+│   │
+│   └── app.js
 │
-├── database
-│   └── connection.js
-│
-├── docs
-│   └── swagger.js
-│
-├── middlewares
-│   └── validarPost.js
-│
-├── routes
-│   └── postsRoutes.js
-│
-└── app.js
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+├── package.json
+├── package-lock.json
+└── README.md
 ```
 
 ---
 
-# ⚙️ Instalação
+# ⚙️ Como Executar o Projeto
 
 ## 1. Clone o repositório
 
 ```bash
-git clone https://github.com/brgcostadev/blog-tech-challenge.git
+git clone https://github.com/SEU-USUARIO/blog-tech-challenge.git
 ```
 
 Entre na pasta do projeto.
@@ -72,13 +79,21 @@ npm install
 
 ## 3. Configure as variáveis de ambiente
 
-Copie o arquivo de exemplo.
+Copie o arquivo `.env.example` para `.env`.
+
+No Linux/macOS:
 
 ```bash
 cp .env.example .env
 ```
 
-Configure o arquivo `.env`.
+No Windows (PowerShell):
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Edite o arquivo `.env` com as configurações do seu banco:
 
 ```env
 DB_HOST=localhost
@@ -96,7 +111,7 @@ DB_NAME=blog_db
 docker compose up -d
 ```
 
-Verifique se o container está em execução.
+Verifique se o container está em execução:
 
 ```bash
 docker ps
@@ -106,13 +121,13 @@ docker ps
 
 ## 5. Crie a tabela
 
-Conecte ao banco.
+Conecte ao PostgreSQL:
 
 ```bash
 docker exec -it blog_postgres psql -U postgres -d blog_db
 ```
 
-Execute:
+Execute o comando SQL:
 
 ```sql
 CREATE TABLE posts (
@@ -131,91 +146,41 @@ CREATE TABLE posts (
 npm run dev
 ```
 
-Servidor:
+Servidor disponível em:
 
-```text
+```
 http://localhost:3000
 ```
 
 ---
 
-# 📖 Documentação
+# 📖 Documentação da API
 
 Após iniciar a aplicação, acesse:
 
-```text
+```
 http://localhost:3000/api-docs
 ```
 
-Toda a documentação da API estará disponível através do Swagger.
+A documentação completa está disponível através do Swagger.
 
 ---
 
 # 🔗 Endpoints
 
-## Buscar todos os posts
-
-```http
-GET /posts
-```
-
----
-
-## Buscar post por ID
-
-```http
-GET /posts/{id}
-```
-
----
-
-## Criar post
-
-```http
-POST /posts
-```
-
-Exemplo:
-
-```json
-{
-  "titulo": "Meu primeiro post",
-  "conteudo": "Conteúdo do post",
-  "autor": "Bruno"
-}
-```
-
----
-
-## Atualizar post
-
-```http
-PUT /posts/{id}
-```
-
-Exemplo:
-
-```json
-{
-  "titulo": "Post atualizado",
-  "conteudo": "Novo conteúdo",
-  "autor": "Bruno"
-}
-```
-
----
-
-## Excluir post
-
-```http
-DELETE /posts/{id}
-```
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/posts` | Lista todos os posts |
+| GET | `/posts/{id}` | Busca um post pelo ID |
+| POST | `/posts` | Cria um novo post |
+| PUT | `/posts/{id}` | Atualiza um post |
+| DELETE | `/posts/{id}` | Remove um post |
 
 ---
 
 # ✅ Validações
 
-A API possui middleware para validação dos dados enviados.
+A API utiliza um middleware para validar os dados enviados nas operações de criação e atualização.
 
 Campos obrigatórios:
 
@@ -223,20 +188,22 @@ Campos obrigatórios:
 - conteudo
 - autor
 
-Caso algum campo não seja enviado, a API retorna:
+Caso algum campo não seja informado, a API retorna:
 
-```http
+**Status**
+
+```
 400 Bad Request
 ```
 
-Resposta:
+**Resposta**
 
 ```json
 {
-    "mensagem": "Campos obrigatórios não informados.",
-    "camposFaltando": [
-        "autor"
-    ]
+  "mensagem": "Campos obrigatórios não informados.",
+  "camposFaltando": [
+    "autor"
+  ]
 }
 ```
 
@@ -244,20 +211,21 @@ Resposta:
 
 # 📌 Funcionalidades
 
-- CRUD completo de Posts
-- Integração com PostgreSQL
-- SQL parametrizado
-- Arquitetura MVC
-- Middlewares
-- Variáveis de ambiente (.env)
-- Docker
-- Swagger
-- Tratamento de erros
-- Validação de requisições
+- ✅ CRUD completo de Posts
+- ✅ Integração com PostgreSQL
+- ✅ SQL parametrizado
+- ✅ Arquitetura MVC
+- ✅ Middlewares
+- ✅ Variáveis de ambiente (.env)
+- ✅ Docker
+- ✅ Swagger (OpenAPI)
+- ✅ Tratamento de erros
+- ✅ Validação de requisições
 
 ---
 
 # 👨‍💻 Autor
 
-Desenvolvido por **Bruno Gonçalves Costa** para o Tech Challenge da Pós-Tech Full Stack.
-````
+**Bruno Gonçalves Costa**
+
+Projeto desenvolvido para o **Tech Challenge** da Pós-Tech Full Stack.
