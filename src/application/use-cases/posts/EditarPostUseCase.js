@@ -1,10 +1,18 @@
+const Post = require("../../../domain/entities/Post");
 const postRepository = require("../../../infrastructure/repositories/PostRepository");
 
 class EditarPostUseCase {
     async execute(id, data) {
-        const post = await postRepository.update(id, data);
+         const post = new Post({
+            id,
+            titulo: data.titulo,
+            conteudo: data.conteudo,
+            autor: data.autor
+        });
 
-        return post;
+        const postAtualizado = await postRepository.update(id, post);
+
+        return postAtualizado;
     }
 }
 

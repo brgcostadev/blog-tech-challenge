@@ -1,10 +1,17 @@
+const Post = require("../../../domain/entities/Post");
 const postRepository = require("../../../infrastructure/repositories/PostRepository");
 
 class CriarPostUseCase {
     async execute(data) {
-        const post = await postRepository.create(data);
+        const post = new Post({
+            titulo: data.titulo,
+            conteudo: data.conteudo,
+            autor: data.autor
+        });
 
-        return post;
+        const postCriado = await postRepository.create(post);
+
+        return postCriado;
     }
 }
 
