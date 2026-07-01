@@ -1,11 +1,13 @@
-const postRepository = require("../../../infrastructure/repositories/PostRepository");
-
 class ListarPostsUseCase {
+    constructor(postRepository) {
+        this.postRepository = postRepository;
+    }
+
     async execute() {
-        const posts = await postRepository.findAll();
+        const posts = await this.postRepository.findAll();
 
         return posts;
     }
 }
 
-module.exports = new ListarPostsUseCase();
+module.exports = ListarPostsUseCase;

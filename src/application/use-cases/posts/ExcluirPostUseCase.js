@@ -1,11 +1,13 @@
-const postRepository = require("../../../infrastructure/repositories/PostRepository");
-
 class ExcluirPostUseCase {
+    constructor(postRepository) {
+        this.postRepository = postRepository;
+    }
+
     async execute(id) {
-        const post = await postRepository.delete(id);
+        const post = await this.postRepository.delete(id);
 
         return post;
     }
 }
 
-module.exports = new ExcluirPostUseCase();
+module.exports = ExcluirPostUseCase;

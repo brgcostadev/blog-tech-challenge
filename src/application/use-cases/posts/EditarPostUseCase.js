@@ -1,7 +1,10 @@
 const Post = require("../../../domain/entities/Post");
-const postRepository = require("../../../infrastructure/repositories/PostRepository");
 
 class EditarPostUseCase {
+    constructor(postRepository) {
+        this.postRepository = postRepository;
+    }
+
     async execute(id, data) {
          const post = new Post({
             id,
@@ -10,10 +13,10 @@ class EditarPostUseCase {
             autor: data.autor
         });
 
-        const postAtualizado = await postRepository.update(id, post);
+        const postAtualizado = await this.postRepository.update(id, post);
 
         return postAtualizado;
     }
 }
 
-module.exports = new EditarPostUseCase();
+module.exports = EditarPostUseCase;

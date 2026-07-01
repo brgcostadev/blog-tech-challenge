@@ -1,11 +1,12 @@
-const postRepository = require("../../../infrastructure/repositories/PostRepository");
-
 class BuscarPostPorIdUseCase {
+    constructor(postRepository) {
+        this.postRepository = postRepository;
+    }
     async execute(id) {
-        const post = await postRepository.findById(id);
+        const post = await this.postRepository.findById(id);
 
         return post;
     }
 }
 
-module.exports = new BuscarPostPorIdUseCase();
+module.exports = BuscarPostPorIdUseCase;

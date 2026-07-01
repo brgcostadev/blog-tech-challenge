@@ -1,9 +1,14 @@
 const postRepository = require("../infrastructure/repositories/PostRepository");
-const listarPostsUseCase = require("../application/use-cases/posts/ListarPostsUseCase");
-const buscarPostPorIdUseCase = require("../application/use-cases/posts/BuscarPostPorIdUseCase");
-const criarPostUseCase = require("../application/use-cases/posts/CriarPostUseCase");
-const editarPostUseCase = require("../application/use-cases/posts/EditarPostUseCase");
-const excluirPostUseCase = require("../application/use-cases/posts/ExcluirPostUseCase");
+const ListarPostsUseCase = require("../application/use-cases/posts/ListarPostsUseCase");
+const listarPostsUseCase = new ListarPostsUseCase(postRepository);
+const BuscarPostPorIdUseCase = require("../application/use-cases/posts/BuscarPostPorIdUseCase");
+const buscarPostPorIdUseCase = new BuscarPostPorIdUseCase(postRepository);
+const CriarPostUseCase = require("../application/use-cases/posts/CriarPostUseCase");
+const criarPostUseCase = new CriarPostUseCase(postRepository);
+const EditarPostUseCase = require("../application/use-cases/posts/EditarPostUseCase");
+const editarPostUseCase = new EditarPostUseCase(postRepository);
+const ExcluirPostUseCase = require("../application/use-cases/posts/ExcluirPostUseCase");
+const excluirPostUseCase = new ExcluirPostUseCase(postRepository);
 
 async function listarPosts(req, res) {
     try {
