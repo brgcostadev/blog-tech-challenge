@@ -1,6 +1,11 @@
 const pool = require("../../database/connection");
+const PostRepositoryInterface = require("../../domain/repositories/PostRepositoryInterface");
 
-class PostRepository {
+class PostRepository extends PostRepositoryInterface {
+    constructor() {
+        super();
+    }
+
     async findAll() {
         const resultado = await pool.query(
             "SELECT * FROM posts ORDER BY id ASC"
