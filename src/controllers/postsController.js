@@ -1,14 +1,11 @@
-const postRepository = require("../infrastructure/repositories/PostRepository");
-const ListarPostsUseCase = require("../application/use-cases/posts/ListarPostsUseCase");
-const listarPostsUseCase = new ListarPostsUseCase(postRepository);
-const BuscarPostPorIdUseCase = require("../application/use-cases/posts/BuscarPostPorIdUseCase");
-const buscarPostPorIdUseCase = new BuscarPostPorIdUseCase(postRepository);
-const CriarPostUseCase = require("../application/use-cases/posts/CriarPostUseCase");
-const criarPostUseCase = new CriarPostUseCase(postRepository);
-const EditarPostUseCase = require("../application/use-cases/posts/EditarPostUseCase");
-const editarPostUseCase = new EditarPostUseCase(postRepository);
-const ExcluirPostUseCase = require("../application/use-cases/posts/ExcluirPostUseCase");
-const excluirPostUseCase = new ExcluirPostUseCase(postRepository);
+const {
+    listarPostsUseCase,
+    buscarPostPorIdUseCase,
+    criarPostUseCase,
+    editarPostUseCase,
+    excluirPostUseCase
+} = require("../container/postsContainer");
+
 
 async function listarPosts(req, res) {
     try {
