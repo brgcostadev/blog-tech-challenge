@@ -26,12 +26,6 @@ async function buscarPostPorId(req, res) {
         const id = Number(req.params.id);
         const post = await buscarPostPorIdUseCase.execute(id);
 
-        if (!post) {
-            return res.status(404).json({
-                mensagem: "Post não encontrado"
-            });
-        }
-
         res.json(post);
     } catch (error) {
         console.error("Erro ao buscar post por ID:", error);
