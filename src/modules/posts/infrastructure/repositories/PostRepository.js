@@ -1,4 +1,4 @@
-const pool = require("../../database/connection");
+const pool = require("../../../../infrastructure/database/connection");
 const PostRepositoryInterface = require("../../domain/repositories/PostRepositoryInterface");
 
 class PostRepository extends PostRepositoryInterface {

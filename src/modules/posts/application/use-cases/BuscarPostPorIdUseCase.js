@@ -1,4 +1,4 @@
-const NotFoundError = require("../../../shared/errors/NotFoundError");
+const NotFoundError = require("../../../../shared/errors/NotFoundError");
 
 class BuscarPostPorIdUseCase {
     constructor(postRepository) {

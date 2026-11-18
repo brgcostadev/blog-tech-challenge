@@ -1,4 +1,4 @@
-const Post = require("../../../domain/entities/Post");
+const Post = require("../../domain/entities/Post");
 
 class CriarPostUseCase {
     constructor(postRepository) {

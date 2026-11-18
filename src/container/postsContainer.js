@@ -1,10 +1,10 @@
-const postRepository = require("../infrastructure/repositories/PostRepository");
+const postRepository = require("../modules/posts/infrastructure/repositories/PostRepository");
 
-const ListarPostsUseCase = require("../application/use-cases/posts/ListarPostsUseCase");
-const BuscarPostPorIdUseCase = require("../application/use-cases/posts/BuscarPostPorIdUseCase");
-const CriarPostUseCase = require("../application/use-cases/posts/CriarPostUseCase");
-const EditarPostUseCase = require("../application/use-cases/posts/EditarPostUseCase");
-const ExcluirPostUseCase = require("../application/use-cases/posts/ExcluirPostUseCase");
+const ListarPostsUseCase = require("../modules/posts/application/use-cases/ListarPostsUseCase");
+const BuscarPostPorIdUseCase = require("../modules/posts/application/use-cases/BuscarPostPorIdUseCase");
+const CriarPostUseCase = require("../modules/posts/application/use-cases/CriarPostUseCase");
+const EditarPostUseCase = require("../modules/posts/application/use-cases/EditarPostUseCase");
+const ExcluirPostUseCase = require("../modules/posts/application/use-cases/ExcluirPostUseCase");
 
 const listarPostsUseCase = new ListarPostsUseCase(postRepository);
 const buscarPostPorIdUseCase = new BuscarPostPorIdUseCase(postRepository);
